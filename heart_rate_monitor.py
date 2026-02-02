@@ -5,8 +5,8 @@ import os
 from datetime import datetime
 
 # Directory and file configuration
-LOG_DIR = "active_logs"
-LOG_FILE = os.path.join(LOG_DIR, "heart_rate_log.log")
+LOG_DIR = "hospital_data/active_logs"
+LOG_FILE = os.path.join(LOG_DIR, "heart_rate.log")
 PID_FILE = "/tmp/heart_rate_monitor.pid"
 DEVICES = ["HeartRate_Monitor_A", "HeartRate_Monitor_B"]
 
@@ -47,10 +47,11 @@ if __name__ == "__main__":
     if len(sys.argv) < 2:
         print("Usage: python3 heart_rate_monitor.py [start|stop]")
         sys.exit(1)
-    
+
     if sys.argv[1] == "start":
         start()
     elif sys.argv[1] == "stop":
         stop()
     else:
         print("Invalid command. Use 'start' or 'stop'.")
+
