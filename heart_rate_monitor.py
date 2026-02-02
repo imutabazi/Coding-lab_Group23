@@ -1,3 +1,14 @@
+#!/usr/bin/bash/env python3
+# ===============================================================================================
+# Group Name: Coding-lab_Group23
+# File Name: heart_rate_monitor.py
+# Author(s): Seruvumba Orion, Innocente Mutabazi, Asaph Rukundo, Kelly Sangwe, Magnificat Umutesi
+# Date: 2026-02-02
+# Description:
+# This script simulates heart rate monitor devices
+# by generating random heart rate values and
+# logging them continuously to a log file.
+#=================================================================================================
 import random
 import time
 import sys
@@ -25,6 +36,9 @@ def log_data():
         time.sleep(1)
 
 def start():
+    if os.path.exists(PID_FILE):
+        print("Error: Monitor already running.")
+        sys.exist(1)
     pid = os.fork()
     if pid > 0:
         with open(PID_FILE, "w") as f:
@@ -37,20 +51,25 @@ def stop():
     if os.path.exists(PID_FILE):
         with open(PID_FILE, "r") as f:
             pid = int(f.read().strip())
-        os.kill(pid, 9)
+            if not pid.isdigit():
+                print("Error: Invalid PID file.")
+                sys.exit(1)
+        os.kill(int(pid), 9)
         os.remove(PID_FILE)
         print("Stopped.")
     else:
         print("No running process found.")
 
 if __name__ == "__main__":
-    if len(sys.argv) < 2:
+    if len(sys.argv) != 2:
         print("Usage: python3 heart_rate_monitor.py [start|stop]")
         sys.exit(1)
-
-    if sys.argv[1] == "start":
+        
+    command = sys.argv[1].lower()
+    
+    if command == "start":
         start()
-    elif sys.argv[1] == "stop":
+    elif command == "stop":
         stop()
     else:
         print("Invalid command. Use 'start' or 'stop'.")
